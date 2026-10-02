@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="160" viewBox="0 0 700 160" fill="none" role="img" aria-label="CellScope AI logo">
+  <rect x="10" y="10" width="140" height="140" rx="43" fill="#103940"/>
+  <path d="M45 99V61l35-22 35 22v38l-35 22-35-22Z" stroke="#7EDABB" stroke-width="7"/>
+  <circle cx="77" cy="70" r="14" fill="#E8B083"/>
+  <circle cx="102" cy="88" r="9" fill="#7EDABB"/>
+  <circle cx="62" cy="98" r="8" fill="#D7EEE5"/>
+  <text x="178" y="102" font-family="Inter, Arial, sans-serif" font-size="70" font-weight="760" letter-spacing="-4" fill="#15373E">CellScope</text>
+  <text x="540" y="102" font-family="Inter, Arial, sans-serif" font-size="70" font-weight="760" letter-spacing="-4" fill="#0FA68A">AI</text>
+</svg>

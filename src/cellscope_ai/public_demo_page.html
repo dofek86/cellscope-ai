@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d3037">
+  <meta name="description" content="CellScope AI: a research demo for organ-on-a-chip microscopy image review.">
+  <title>CellScope AI — See more in every sample</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#17353b;background:#f7f8f3;scroll-behavior:smooth}
+    *{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}a{color:inherit}
+    .shell{max-width:1240px;margin:auto;padding:0 34px}
+    .topbar{background:#f7f8f3;border-bottom:1px solid #e4e9e3}
+    .nav{min-height:82px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:#15373e;font-size:22px;font-weight:780;letter-spacing:-.05em;white-space:nowrap}
+    .brand-mark{width:41px;height:41px;flex:none}.brand span span{color:#0fa68a}
+    .nav-links{display:flex;align-items:center;gap:32px}.nav-links>a{font-size:14px;font-weight:680;text-decoration:none;color:#476168}.nav-links>a:hover{color:#078d75}
+    .nav-links .nav-cta{background:#153a41;color:white;padding:11px 17px;border-radius:999px}.nav-links .nav-cta:hover{background:#0f7266;color:white}
+    .hero{position:relative;overflow:hidden;background:#edf6f0;border-bottom:1px solid #d9e8dd}
+    .hero:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 81% 13%,#c5ebe080,transparent 35%),linear-gradient(110deg,#f3f9f4 3%,#eaf5ee 100%)}
+    .hero .shell{position:relative;display:grid;grid-template-columns:1fr .9fr;align-items:center;gap:52px;padding-top:82px;padding-bottom:92px}
+    .eyebrow{display:inline-flex;align-items:center;gap:9px;text-transform:uppercase;letter-spacing:.18em;font-size:11px;font-weight:800;color:#0a866f}
+    .eyebrow:before{content:"";width:8px;height:8px;border-radius:50%;background:#17af88;box-shadow:0 0 0 5px #17af8825}
+    h1{font-size:clamp(54px,6vw,88px);line-height:.99;letter-spacing:-.075em;margin:24px 0 27px;font-weight:750;max-width:740px}
+    h1 em{font-family:Georgia,serif;font-weight:400;letter-spacing:-.075em;color:#118e79}
+    .lead{font-size:19px;line-height:1.68;color:#557178;max-width:610px;margin:0 0 29px}
+    .hero-actions{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+    .button{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:12px;padding:15px 21px;font-size:14px;font-weight:780;text-decoration:none;transition:transform .15s,background .15s,box-shadow .15s}
+    .button:hover{transform:translateY(-2px)}.button-primary{background:#0e8b74;color:white;box-shadow:0 12px 26px #0e8b7429}.button-primary:hover{background:#0b715f}
+    .button-secondary{color:#15454a;background:#ffffffa8;border:1px solid #c7ddd2}
+    .hero-small{margin-top:25px;font-size:12px;font-weight:700;letter-spacing:.04em;color:#69827f;text-transform:uppercase}
+    .visual{position:relative;max-width:520px;width:100%;justify-self:end}
+    .visual:before{content:"";position:absolute;width:70%;aspect-ratio:1;border:1px solid #9ecfc0;border-radius:50%;left:-13%;top:12%;opacity:.55}
+    .visual-card{position:relative;border:1px solid #315359;border-radius:29px;padding:18px;background:#14333c;box-shadow:0 32px 66px #173f3840;transform:rotate(2deg)}
+    .visual-card:before{content:"";position:absolute;inset:7px;border:1px solid #ffffff10;border-radius:23px;pointer-events:none}
+    .visual-top{display:flex;justify-content:space-between;align-items:center;color:#bfd9d1;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:8px 9px 15px}
+    .visual-top .dots{display:flex;gap:5px}.visual-top .dots i{width:6px;height:6px;border-radius:50%;background:#79b9aa;display:block}.visual-top .dots i:last-child{background:#efae80}
+    .micrograph{border-radius:18px;overflow:hidden;border:1px solid #537d7a;background:#163940;aspect-ratio:1.18;position:relative}
+    .micrograph svg{display:block;width:100%;height:100%}
+    .visual-bottom{display:flex;justify-content:space-between;align-items:center;color:#b7d7d0;padding:16px 8px 5px;font-size:11px;letter-spacing:.05em}
+    .visual-bottom strong{font-size:12px;color:#e2faf0}.visual-tag{position:absolute;bottom:-18px;left:-26px;background:#fff;padding:15px 17px;border-radius:13px;box-shadow:0 15px 32px #173f3828;display:flex;align-items:center;gap:11px;transform:rotate(-2deg);font-size:12px;font-weight:780;color:#1d4946}
+    .visual-tag svg{width:24px;height:24px}.visual-caption{position:absolute;right:0;bottom:-38px;font-size:10px;color:#69827f;letter-spacing:.08em;text-transform:uppercase}
+    .metrics{background:white;border-bottom:1px solid #e3eae5}.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);padding-top:30px;padding-bottom:30px}
+    .metric{padding:0 32px;border-left:1px solid #e5ece8}.metric:first-child{padding-left:0;border:0}.metric strong{display:block;font-size:28px;letter-spacing:-.05em;color:#113c3e}.metric span{display:block;font-size:12px;color:#69807b;line-height:1.45;margin-top:3px}
+    .section{padding:95px 0 100px}.section-intro{display:flex;justify-content:space-between;gap:40px;align-items:end;margin-bottom:32px}.section-intro h2{font-size:clamp(36px,4vw,54px);line-height:1.1;letter-spacing:-.06em;max-width:620px;margin:12px 0 0}.section-intro p{max-width:330px;color:#69807d;line-height:1.6;margin:0 0 4px}
+    .workbench{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;align-items:start}
+    .panel{background:#fff;border:1px solid #e1e9e4;border-radius:22px;box-shadow:0 15px 40px #1b46400b;padding:30px}
+    .panel-heading{display:flex;align-items:center;gap:14px;margin-bottom:24px}.panel-icon{width:44px;height:44px;border-radius:13px;background:#e5f6ed;color:#0b8a70;display:grid;place-items:center}.panel-icon svg{width:22px;height:22px}.panel h3{font-size:22px;letter-spacing:-.035em;margin:0}.panel-heading p{font-size:13px;color:#718782;margin:3px 0 0}
+    .upload{position:relative;border:2px dashed #accfc2;border-radius:16px;background:#f3faf5;min-height:215px;display:flex;align-items:center;justify-content:center;text-align:center;padding:25px;transition:border-color .2s,background .2s,transform .2s}
+    .upload.drag{border-color:#0a9a78;background:#e4f6ed;transform:scale(1.01)}.upload:focus-within{outline:3px solid #a5dccc;outline-offset:3px}
+    .upload input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}.upload svg{display:block;margin:0 auto 12px;width:40px;height:40px;color:#11957b}.upload strong{display:block;font-size:17px;color:#224a48}.upload small{display:block;color:#718782;margin-top:7px;font-size:12px}.upload span{color:#0d9678;text-decoration:underline;text-underline-offset:3px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}label.field{display:block;font-size:12px;font-weight:770;color:#355853;margin-bottom:7px}.optional{font-weight:500;color:#91a19d}
+    .field-input{width:100%;border:1px solid #d5e3da;background:#fff;border-radius:10px;min-height:44px;padding:10px 12px;color:#294b49;outline:none}.field-input:focus{border-color:#129c7c;box-shadow:0 0 0 3px #13a7841e}
+    .form-note{font-size:12px;color:#7e928a;line-height:1.55;margin:16px 0 0}.form-actions{display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin-top:20px}.form-actions button:disabled{opacity:.6;cursor:wait;transform:none}.status{font-size:12px;color:#5a7770;line-height:1.5}.status.error{color:#ae5037;font-weight:700}
+    .guide{display:grid;gap:18px}.guide .step{display:grid;grid-template-columns:30px 1fr;gap:12px;padding-bottom:19px;border-bottom:1px solid #e8efeb}.guide .step:last-child{border:0;padding-bottom:0}.step-index{font-family:Georgia,serif;font-size:20px;color:#13a383}.step strong{font-size:14px;color:#204441}.step p{font-size:12px;line-height:1.6;color:#738980;margin:6px 0 0}
+    .notice{border-radius:16px;background:#fff2e7;border:1px solid #f6dfcd;padding:19px 21px;margin-top:22px}.notice strong{display:block;color:#9b5839;font-size:13px}.notice p{font-size:12px;line-height:1.65;color:#906b58;margin:7px 0 0}
+    .results{margin-top:22px}.result-head{display:flex;align-items:start;justify-content:space-between;gap:15px;margin-bottom:20px}.result-head h3{margin:0;font-size:23px}.result-head p{margin:5px 0 0;color:#70867f;font-size:12px}.result-label{font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;background:#dff5ea;color:#138c6d;border-radius:999px;padding:7px 10px;white-space:nowrap}
+    .result-list{display:grid;gap:11px}.result-item{border:1px solid #e0eae3;background:#fbfdfa;border-radius:13px;padding:15px 16px}.result-top{display:flex;justify-content:space-between;gap:14px;align-items:start}.result-name{font-size:13px;font-weight:750;overflow-wrap:anywhere}.result-decision{font-size:11px;font-weight:770;white-space:nowrap}.result-decision.good{color:#0a8a6a}.result-decision.bad{color:#b2683e}
+    .result-score{display:flex;align-items:center;gap:12px;margin-top:12px}.track{height:7px;background:#e4ece7;border-radius:9px;flex:1;overflow:hidden}.fill{height:100%;background:#12a587;border-radius:9px}.result-score strong{font-size:15px;min-width:50px;text-align:right;color:#234b47}.result-signal{font-size:11px;color:#81938c;margin-top:9px}.result-footnote{font-size:11px;line-height:1.6;color:#789087;margin:16px 0 0}
+    .research{background:#15363d;color:white;padding:62px 0}.research-grid{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}.research h2{font-size:clamp(32px,4vw,46px);letter-spacing:-.055em;margin:12px 0 15px}.research p{color:#c0d6d1;line-height:1.7;font-size:14px;max-width:650px}.research .eyebrow{color:#7bd5b6}.research-cards{display:grid;gap:10px}.research-cards div{border:1px solid #44666a;background:#ffffff09;border-radius:13px;padding:15px 17px;font-size:13px;line-height:1.55;color:#d8ece6}.research-cards b{color:#88e0c1}
+    footer{padding:31px 0;background:#0d2d34;color:#bed1cd}footer .shell{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}footer small{font-size:11px;line-height:1.6}footer a{color:#a4e0ca;text-underline-offset:3px}
+    @media(max-width:920px){.hero .shell{gap:20px;grid-template-columns:1fr .8fr}.visual-tag{left:-10px}.shell{padding-left:24px;padding-right:24px}}
+    @media(max-width:760px){.nav{min-height:70px}.nav-links>a:not(.nav-cta){display:none}.hero .shell{display:block;padding-top:58px;padding-bottom:72px}.hero h1{font-size:clamp(51px,13vw,70px)}.visual{margin:55px auto 8px;max-width:440px}.metric-grid{grid-template-columns:1fr 1fr;gap:24px}.metric:nth-child(3){grid-column:1/-1;padding-left:0;border:0}.section{padding:65px 0}.section-intro{display:block}.section-intro p{margin-top:15px}.workbench,.research-grid{grid-template-columns:1fr}.research-grid{gap:22px}.visual-caption{bottom:-26px}}
+    @media(max-width:520px){.shell{padding-left:18px;padding-right:18px}.brand{font-size:19px}.brand-mark{width:36px;height:36px}.nav-links .nav-cta{padding:10px 13px;font-size:12px}.lead{font-size:16px}.metric-grid{gap:18px}.metric{padding-left:18px}.metric strong{font-size:22px}.panel{padding:20px}.form-grid{grid-template-columns:1fr}.visual-tag{font-size:10px;padding:10px 12px}.result-top{display:block}.result-decision{display:block;margin-top:4px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="shell nav">
+    <a class="brand" href="#top" aria-label="CellScope AI home">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="2" y="2" width="44" height="44" rx="14" fill="#103940"/><path d="M13 30V19l11-7 11 7v11l-11 7-11-7Z" stroke="#7EDABB" stroke-width="2.2"/><circle cx="23" cy="22" r="4.3" fill="#E8B083"/><circle cx="31" cy="27" r="2.7" fill="#7EDABB"/><circle cx="18" cy="30" r="2.5" fill="#D7EEE5"/></svg>
+      <span>CellScope<span> AI</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#research">Research</a><a class="nav-cta" href="#try-demo">Try the demo ↗</a></nav>
+  </div></header>
+
+  <main id="top">
+    <section class="hero"><div class="shell">
+      <div><div class="eyebrow">AI4S · Organ-on-a-chip · Live prototype</div><h1>See more in every <em>sample.</em></h1>
+        <p class="lead">An AI research assistant for reviewing bright-field organ-on-a-chip microscopy images. Bring your own image, explore its model score, and keep expert judgment in the loop.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#try-demo">Analyze an image <span aria-hidden="true">↗</span></a><a class="button button-secondary" href="#how-it-works">Explore the method <span aria-hidden="true">→</span></a></div>
+        <div class="hero-small">Research prototype · No account needed · No stored uploads</div>
+      </div>
+      <div class="visual" aria-label="Illustrative visualization of a microscopy channel">
+        <div class="visual-card"><div class="visual-top"><span>CellScope / field of view</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
+          <div class="micrograph"><svg viewBox="0 0 500 425" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Abstract illustration of cells inside a microfluidic channel">
+            <defs><radialGradient id="bg"><stop stop-color="#3d7770"/><stop offset="1" stop-color="#12363f"/></radialGradient><radialGradient id="cell"><stop stop-color="#a6d9bc" stop-opacity=".85"/><stop offset=".6" stop-color="#569c8f" stop-opacity=".54"/><stop offset="1" stop-color="#1d6f6c" stop-opacity=".25"/></radialGradient><pattern id="grain" width="40" height="36" patternUnits="userSpaceOnUse"><circle cx="6" cy="11" r="1" fill="#e9f4dc" opacity=".32"/><circle cx="29" cy="28" r="1.5" fill="#c6e5d9" opacity=".16"/></pattern></defs>
+            <rect width="500" height="425" fill="url(#bg)"/><rect width="500" height="425" fill="url(#grain)"/><path d="M72 0v425M430 0v425" stroke="#a6dfb9" stroke-opacity=".55" stroke-width="14"/><path d="M48 0v425M453 0v425" stroke="#193e43" stroke-opacity=".7" stroke-width="30"/>
+            <g fill="url(#cell)" stroke="#b8e5cb" stroke-opacity=".56" stroke-width="2"><circle cx="137" cy="63" r="21"/><circle cx="205" cy="86" r="28"/><circle cx="293" cy="48" r="20"/><circle cx="364" cy="80" r="26"/><circle cx="169" cy="158" r="30"/><circle cx="262" cy="145" r="22"/><circle cx="345" cy="174" r="32"/><circle cx="114" cy="238" r="25"/><circle cx="206" cy="248" r="31"/><circle cx="286" cy="235" r="26"/><circle cx="384" cy="260" r="23"/><circle cx="157" cy="338" r="29"/><circle cx="252" cy="351" r="22"/><circle cx="330" cy="338" r="28"/><circle cx="388" cy="364" r="16"/></g>
+            <g fill="#e3e5ba" opacity=".45"><circle cx="130" cy="58" r="5"/><circle cx="203" cy="84" r="7"/><circle cx="360" cy="78" r="7"/><circle cx="166" cy="156" r="7"/><circle cx="346" cy="170" r="6"/><circle cx="206" cy="248" r="8"/><circle cx="289" cy="235" r="6"/><circle cx="326" cy="335" r="7"/></g>
+            <path d="M25 36h33M25 36v33M475 36h-33M475 36v33M25 389h33M25 389v-33M475 389h-33M475 389v-33" stroke="#a4e7cf" stroke-width="2" opacity=".75"/>
+            <circle cx="250" cy="212" r="92" fill="none" stroke="#ecbd95" stroke-width="1.5" stroke-dasharray="5 8" opacity=".7"/><path d="M250 110v27m0 150v27M148 212h27m150 0h27" stroke="#ecbd95" stroke-width="2" opacity=".8"/>
+          </svg></div>
+          <div class="visual-bottom"><strong>Image-level review</strong><span>DINOv2 · Full frame + local views</span></div>
+        </div>
+        <div class="visual-tag"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#DDF5E8"/><path d="m7 12 3 3 7-7" stroke="#0F9776" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Human review stays in the loop</div>
+        <div class="visual-caption">Illustrative graphic — not a source microscopy image</div>
+      </div>
+    </div></section>
+
+    <div class="metrics"><div class="shell metric-grid">
+      <div class="metric"><strong>3,072</strong><span>public development images assessed</span></div>
+      <div class="metric"><strong>59</strong><span>acquisition sessions grouped for evaluation</span></div>
+      <div class="metric"><strong>81.03%</strong><span>balanced accuracy on one session-grouped development split*</span></div>
+    </div></div>
+
+    <section class="section" id="try-demo"><div class="shell">
+      <div class="section-intro"><div><div class="eyebrow">Live workspace</div><h2>Put your images under the lens.</h2></div><p>Upload an image from your own authorized collection and inspect the model's output in seconds.</p></div>
+      <div class="workbench">
+        <div>
+          <div class="panel"><div class="panel-heading"><div class="panel-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/><circle cx="8" cy="9" r="1.5" fill="currentColor"/><path d="m4 17 5-5 4 4 3-3 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><h3>Analyze a sample</h3><p>One image or up to five from the same acquisition session</p></div></div>
+            <form id="form"><label class="upload" id="upload-zone" for="images"><input id="images" type="file" accept=".png,.jpg,.jpeg,.tif,.tiff,.bmp,image/png,image/jpeg,image/tiff,image/bmp" multiple required aria-describedby="upload-hint"><span><svg viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="5" y="9" width="38" height="30" rx="8" stroke="currentColor" stroke-width="2.3"/><path d="M24 31V18m0 0-6 6m6-6 6 6" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg><strong id="file-label">Drop microscopy images here, or <span>browse files</span></strong><small id="upload-hint">PNG, JPEG, TIFF or BMP · up to 8 MB each</small></span></label>
+              <div class="form-grid"><div><label class="field" for="session">Session ID <span class="optional">· optional</span></label><input class="field-input" id="session" type="text" maxlength="100" placeholder="e.g. acquisition-01"></div><div><label class="field" for="cellType">Cell type <span class="optional">· optional</span></label><select class="field-input" id="cellType"><option value="">Not specified</option><option>A549</option><option>CACO</option><option>HPMEC</option><option>HSAEC</option><option>HUVEC</option><option>NHBE</option></select></div></div>
+              <p class="form-note">A session ID and cell type enable an optional experimental batch signal for five images. The primary score works without either field.</p>
+              <div class="form-actions"><button class="button button-primary" id="submit" type="submit">Run analysis <span aria-hidden="true">↗</span></button><span id="status" class="status" role="status" aria-live="polite"></span></div>
+            </form>
+          </div>
+          <div class="panel results" id="result" hidden><div class="result-head"><div><h3>Your analysis</h3><p id="mode"></p></div><span class="result-label">Model output</span></div><div class="result-list" id="rows"></div><p class="result-footnote">The percentage is the model's estimate of the dataset's “good” label. It is not a validated measure of biological safety or image correctness.</p></div>
+        </div>
+        <div><div class="panel" id="how-it-works"><div class="panel-heading"><div class="panel-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 18h16M6 16l4-7 3 3 4-7 2 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><h3>How it works</h3><p>A compact research pipeline</p></div></div>
+          <div class="guide"><div class="step"><span class="step-index">01</span><div><strong>Image goes in</strong><p>The model accepts bright-field microscopy images. Provide only images you are permitted to upload.</p></div></div><div class="step"><span class="step-index">02</span><div><strong>Features are compared</strong><p>Frozen DINOv2 analyzes global and local views; same-session images can contribute context.</p></div></div><div class="step"><span class="step-index">03</span><div><strong>A reviewer decides</strong><p>The output helps prioritize attention. It does not establish a verified cause for a poor image.</p></div></div></div>
+          </div><div class="notice"><strong>Research use only</strong><p>A high score does not clear an experiment or diagnose a condition. New laboratory sessions have not yet been independently validated. Your uploads are held temporarily for the request and then removed; they are not used for training.</p></div></div>
+      </div>
+    </div></section>
+
+    <section class="research" id="research"><div class="shell research-grid"><div><div class="eyebrow">The evidence behind the demo</div><h2>Built to show the signal—and its limits.</h2><p>The source dataset carries a binary good/bad label, not a confirmed reason for every rejected frame. We report grouped development performance, known errors and the next scientific test rather than presenting a model score as a biological verdict.</p></div><div class="research-cards"><div><b>Session-aware evaluation.</b> Whole acquisition sessions were held out in development instead of mixing neighboring frames at random.</div><div><b>Second split.</b> The same images yielded 79.81% balanced accuracy with a different grouping; this is not an independent cohort.</div><div><b>Next step.</b> Freeze the model and test new chips, operators and acquisition sessions with expert reason labels.</div></div></div></section>
+  </main>
+  <footer><div class="shell"><small><strong>CellScope AI</strong> · A research prototype for AI4S Open Innovation.<br>*81.03% is from one selected session-grouped development split of the public cohort, not new-session performance.</small><small>Dataset: <a href="https://doi.org/10.5281/zenodo.10203721" target="_blank" rel="noopener noreferrer">Organ-on-a-Chip Image Dataset</a> · Backbone: <a href="https://github.com/facebookresearch/dinov2" target="_blank" rel="noopener noreferrer">Meta DINOv2</a></small></div></footer>
+
+  <script>
+    const form=document.getElementById('form'),files=document.getElementById('images'),status=document.getElementById('status'),button=document.getElementById('submit'),zone=document.getElementById('upload-zone');
+    function updateFiles(){const chosen=[...files.files];document.getElementById('file-label').textContent=chosen.length?chosen.length===1?chosen[0].name:chosen.length+' images selected':'Drop microscopy images here, or browse files';status.textContent='';status.classList.remove('error')}
+    files.addEventListener('change',updateFiles);
+    for(const event of ['dragenter','dragover'])zone.addEventListener(event,e=>{e.preventDefault();zone.classList.add('drag')});
+    for(const event of ['dragleave','drop'])zone.addEventListener(event,e=>{e.preventDefault();zone.classList.remove('drag')});
+    zone.addEventListener('drop',e=>{if(e.dataTransfer&&e.dataTransfer.files.length){files.files=e.dataTransfer.files;updateFiles()}});
+    function signal(item){if(item.texture_review_flag==null)return 'Not assessed';if(item.texture_review_flag)return item.texture_review_stability!=null&&item.texture_review_stability<.8?'Review suggested · sensitive to image selection':'Review suggested (experimental)';return 'No additional signal'}
+    function fail(message){status.textContent=message;status.classList.add('error')}
+    form.addEventListener('submit',async e=>{e.preventDefault();const chosen=[...files.files];if(!chosen.length){fail('Choose at least one image.');return}
+      if(chosen.length>5){fail('Select at most five images.');return}if(chosen.some(f=>f.size>8*1024*1024)){fail('An image exceeds 8 MB.');return}
+      const session=document.getElementById('session').value.trim(),cellType=document.getElementById('cellType').value;
+      if(cellType&&chosen.length===5&&!session){fail('Enter a session ID to assess the optional batch signal.');return}
+      button.disabled=true;status.classList.remove('error');status.textContent='Analyzing on the CPU; this may take a minute…';
+      try{const images=await Promise.all(chosen.map(f=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve({name:f.name,data:reader.result});reader.onerror=reject;reader.readAsDataURL(f)})));
+        const response=await fetch('/api/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({images,session_id:session,cell_type:cellType})});
+        const data=await response.json();if(!response.ok)throw Error(data.error||'Analysis failed');
+        document.getElementById('mode').textContent=images.length===1?'Single image · no within-session smoothing':'Batch of '+images.length+' images · from one acquisition session';
+        const rows=document.getElementById('rows');rows.replaceChildren();for(const item of data.results){const card=document.createElement('div');card.className='result-item';const top=document.createElement('div');top.className='result-top';const name=document.createElement('span');name.className='result-name';name.textContent=item.image;const decision=document.createElement('span');decision.className='result-decision '+(item.decision==='good'?'good':'bad');decision.textContent=item.decision==='good'?'Acceptable candidate':'Review / lower quality';top.append(name,decision);const score=document.createElement('div');score.className='result-score';const track=document.createElement('div');track.className='track';const fill=document.createElement('div');fill.className='fill';fill.style.width=Math.max(0,Math.min(100,item.probability_good*100))+'%';track.append(fill);const value=document.createElement('strong');value.textContent=(100*item.probability_good).toFixed(1)+'%';score.append(track,value);const detail=document.createElement('div');detail.className='result-signal';detail.textContent='Optional batch signal: '+signal(item);card.append(top,score,detail);rows.append(card)}
+        document.getElementById('result').hidden=false;status.textContent='Complete. Uploaded images were removed from temporary storage.';document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'})
+      }catch(error){fail(error.message||'Analysis failed. Please retry.')}finally{button.disabled=false}});
+  </script>
+</body>
+</html>
